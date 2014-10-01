@@ -16,9 +16,7 @@ c = conn.cursor()
 
 ######SELECT+JOIN sorted by date columns from themes tables
 ######IN iteration we execute and write csv
-
-for
-
+	
 #QUERY GENERATOR [Select titles by ids]
 if(len(tables) < 1):
 
@@ -46,17 +44,17 @@ queryGetTitlesById = '''SELECT `Item_title` FROM `__themes_list` WHERE '''+ quer
 
 q = '''SELECT `Item_title` FROM `__themes_list` WHERE  `Item_id`=2833226 OR `Item_id`=5871901 OR `Item_id`=7758048 OR `Item_id`=4519990 OR `Item_id`=5177775 OR `Item_id`=7315054 OR `Item_id`=5489609 OR `Item_id`=11776839 OR `Item_id`=5484319 OR `Item_id`=13373220 OR `Item_id`=4021469'''
 
-print query_concat_ItemIds
+#print query_concat_ItemIds
 
 titles = []
-firstCsvRowArray = ['Sales period'] #PUSH TITLES!
+firstCsvRowArray = ['Sales period']
 
-for title in c.execute(queryGetTitlesById):
-        print str(title[0])
-
-        titles += title #????
-        firstCsvRowArray.append(str(title[0]))
-
+for id in range(0, len(tables)):
+	qGt = c.execute('SELECT `Item_title` FROM `__themes_list` WHERE `Item_id` = '+str(tables[id])).fetchone()[0]
+	titles.append(qGt)
+	
+	#PUSH TITLES
+	firstCsvRowArray.append(titles[id])
 
 
 query_concat_FromJoinedIds = ''	#no join any item
@@ -108,7 +106,7 @@ with open(csvPath, 'ab') as f:
 
 
 # Save (commit) the changes
-conn.commit()
+#conn.commit()
 
 # We can also close the cursor if we are done with it
-c.close()
+#c.close()
