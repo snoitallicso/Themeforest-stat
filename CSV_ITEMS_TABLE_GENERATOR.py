@@ -14,38 +14,6 @@ tables = [2833226,5871901,7758048,4519990,5177775,7315054,5489609,11776839,54843
 conn = sqlite3.connect(dbPath)
 c = conn.cursor()
 
-######SELECT+JOIN sorted by date columns from themes tables
-######IN iteration we execute and write csv
-	
-#QUERY GENERATOR [Select titles by ids]
-if(len(tables) < 1):
-
-	query_concat_ItemIds = '`Item_id`='+str(tables[0])
-	
-else:
-	
-	query_concat_ItemIds = ''
-	
-	for id in range(0, len(tables)):
-		
-		if(id != len(tables)-1):
-			
-			query_concat_ItemIds += '`Item_id`=' + str(tables[id]) + ' OR '
-			
-		else:
-		
-			#END QUERY WITHOUT 'OR'
-			query_concat_ItemIds += '`Item_id`=' + str(tables[id])
-
-#print query_concat_ItemIds
-
-#TODO: get trimmed titles
-queryGetTitlesById = '''SELECT `Item_title` FROM `__themes_list` WHERE '''+ query_concat_ItemIds
-
-q = '''SELECT `Item_title` FROM `__themes_list` WHERE  `Item_id`=2833226 OR `Item_id`=5871901 OR `Item_id`=7758048 OR `Item_id`=4519990 OR `Item_id`=5177775 OR `Item_id`=7315054 OR `Item_id`=5489609 OR `Item_id`=11776839 OR `Item_id`=5484319 OR `Item_id`=13373220 OR `Item_id`=4021469'''
-
-#print query_concat_ItemIds
-
 titles = []
 firstCsvRowArray = ['Sales period']
 
