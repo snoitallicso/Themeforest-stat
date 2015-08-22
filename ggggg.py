@@ -1,9 +1,69 @@
-import hashlib
-#import sqlite3
+import sqlite3
 
-#c = sqlite3.connect("D:\WORKSPACE\STATISTICS\Sales gathering\example.sqlite").cursor()
+#SET ITEMS LIST
+themes = [2833226,5871901,253220,2703099,1264247,168737,2826493,2189918,2819356,2708562,4363266,4287447,4519990,5556590,5484319,3810895,6221179,5177775,4106987,5489609,6434280,7758048,7315054,9512331,9323981,4021469,6776630,8819050,11776839,13373220,9228123,9545812,6339019,13304399,9602611,11118909,10695119,10648488,11099136,9553045,13080328,10439297,7824993]
 
-#c.execute()
+#SET SALES ARRAY
+sales = []
+
+#SET TIME RANGE
+rangeFrom = '2015-01-01'
+rangeTo = '2016-06-01'
+
+#CORRELATIONS GETTING FUNCTION
+def corr(array1, array2):
+	
+	Ex = 0
+	Ey = 0
+	Exy = 0
+	Ex2 = 0
+	Ey2 = 0
+	arraysLength = len(array1)
+	print "arraysLength",arraysLength
+
+	#!if length of arrays is equal!
+	for value in range(0, len(array1)):
+
+		x = array1[value]
+		y = array2[value]
+
+		if(x != 'null' and y != 'null'):
+			
+			Ex += x
+			Ey += y
+			Exy += x*y
+			Ex2 += x*x
+			Ey2 += y*y
+
+		else:
+
+			arraysLength = arraysLength - 1
+
+	r = (arraysLength * Exy - Ex * Ey) / math.sqrt((arraysLength * Ex2 - Ex*Ex) * (arraysLength * Ey2 - Ey*Ey))
+		
+	print 'Ex',Ex,'Ey',Ey,'Exy',Exy,'Ex2',Ex2,'Ey2',Ey2
+	return r
+
+#SQLITE CONNECTION
+c = sqlite3.connect("E:\Sales gathering\exmpl.sqlite").cursor()
+
+for theme in range(0, len(themes)):
+
+	tempArr = []
+	
+	for sale in c.execute("SELECT `Sales` FROM '" + str(themes[theme]) + "' WHERE `Sales_period`>='" + rangeFrom + "' AND `Sales_period`<='" + rangeTo + "'"):
+	
+		if sale[0] != 'null':
+			tempArr.append(int(sale[0]))
+		else:
+			tempArr.append('null')
+		
+	print tempArr
+	sales.append(tempArr)
+	
+	
+	
+	
 
 arr = [1,2,3,4]
 arrLen = len(arr)
@@ -12,33 +72,35 @@ invertConcatList = []
 
 for item in range(0,arrLen):
 
-        for sec_item in range(0,arrLen):
+		for sec_item in range(0,arrLen):
 
-                invConc = str(arr[sec_item]) + "," + str(arr[item])
-                normConc = str(arr[item]) + "," + str(arr[sec_item])
-                
-                ##print 'invConc:',invConc,'normConc:',normConc
+				invConc = str(arr[sec_item]) + "," + str(arr[item])
+				normConc = str(arr[item]) + "," + str(arr[sec_item])
+				
+				##print 'invConc:',invConc,'normConc:',normConc
 
-                if arr[item] != arr[sec_item]:
+				if arr[item] != arr[sec_item]:
 
-                        if normConc in invertConcatList:
-                                
-                                #print 'invConc in invertConcatList'
-                                #print arr[item],arr[sec_item]
-                                1+1
+						if normConc in invertConcatList:
+								
+								#print 'invConc in invertConcatList'
+								#print arr[item],arr[sec_item]
+								1+1
 
-                        else:
+						else:
 
-                                print arr[item],arr[sec_item]
+								print arr[item],arr[sec_item]
 
-                                invertConcatList.append(invConc)
-                                #print 'invertConcatList:',invertConcatList
-                        
-                else:
-                        1+1
-                        #print 'keys duplicates'
+								invertConcatList.append(invConc)
+								#print 'invertConcatList:',invertConcatList
+						
+				else:
+						1+1
+						#print 'keys duplicates'
 
 
 #print hashlib.md5(b'1').hexdigest()
 
 #CREATE TABLE `correlations_2015plus` (`item1` INT NULL,`item2` INT NULL)
+
+#GET 
