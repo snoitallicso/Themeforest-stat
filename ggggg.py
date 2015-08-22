@@ -46,18 +46,13 @@ with open('file.txt', 'w+n') as file:
 		
 		#listFullness = arraysLength - nullsShare
 		
-		#BECAUSE 100/10*0 = 0 NOT 100...
-		if nullsShare != 0:
-		
-			#MATH SHARE PERCENT
-			listFullness = float(Decimal(100) / Decimal(arraysLength)) * nullsShare
-		
-		else: listFullness = 100
+		#MATH SHARE PERCENT
+		listFullness = 100 - (float(Decimal(100) / Decimal(arraysLength)) * nullsShare)
 			
 		print 'listFullness:',listFullness,'arraysLength',arraysLength,'nullsShare',nullsShare
 		file.write('listFullness: '+str(listFullness)+' arraysLength: '+str(arraysLength)+' nullsShare: '+str(nullsShare)+ " \n")
 		
-		if ignoreRatio > listFullness:
+		if listFullness >= ignoreRatio:
 		
 			#!if length of arrays is equal!
 			for value in range(0, len(array1)):
