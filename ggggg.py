@@ -1,7 +1,20 @@
 import sqlite3
 
+#SQLITE CONNECTION
+c = sqlite3.connect("E:\Sales gathering\exmpl.sqlite").cursor()
+
 #SET ITEMS LIST
 themes = [2833226,5871901,253220,2703099,1264247,168737,2826493,2189918,2819356,2708562,4363266,4287447,4519990,5556590,5484319,3810895,6221179,5177775,4106987,5489609,6434280,7758048,7315054,9512331,9323981,4021469,6776630,8819050,11776839,13373220,9228123,9545812,6339019,13304399,9602611,11118909,10695119,10648488,11099136,9553045,13080328,10439297,7824993]
+
+themes_titles = []
+
+for id in range(0, len(themes)):
+
+        #print c.execute("SELECT `Item_title` FROM `__themes_list` WHERE `Item_id`='" + str(themes[id]) + "'").fetchone()
+
+        for title in c.execute("SELECT `Item_title` FROM `__themes_list` WHERE `Item_id`='" + str(themes[id]) + "'"):
+                themes_titles.append(title[0])
+                
 
 #SET SALES ARRAY
 sales = []
@@ -44,8 +57,7 @@ def corr(array1, array2):
 	print 'Ex',Ex,'Ey',Ey,'Exy',Exy,'Ex2',Ex2,'Ey2',Ey2
 	return r
 
-#SQLITE CONNECTION
-c = sqlite3.connect("E:\Sales gathering\exmpl.sqlite").cursor()
+
 
 for theme in range(0, len(themes)):
 
@@ -58,7 +70,7 @@ for theme in range(0, len(themes)):
 		else:
 			tempArr.append('null')
 		
-	print tempArr
+	#print tempArr
 	sales.append(tempArr)
 	
 	
