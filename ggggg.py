@@ -1,3 +1,5 @@
+################# THIS IS OLD VERSION OF 'correlations table generator'
+
 import math
 import sqlite3
 from decimal import *
@@ -24,7 +26,7 @@ with open('file.txt', 'w+n') as file:
 	sales = []
 
 	#SET TIME RANGE
-	rangeFrom = '2016-03-01'
+	rangeFrom = '2015-10-01'
 	rangeTo = '2016-06-01'
 
 	#CORRELATIONS GETTING FUNCTION
@@ -149,7 +151,7 @@ with open('file.txt', 'w+n') as file:
 					item1 = themes_titles[item].encode('utf-8', 'ignore')
 					item2 = themes_titles[sec_item].encode('utf-8', 'ignore')
 
-					correl = str(corr(sales[item],sales[sec_item],100))
+					correl = str(corr(sales[item],sales[sec_item],50))
 					
 					if correl != 'Data is not complete/representative':
 						print 'execute:', 'correl returns', correl, '[item1:','"'+item1+'"', 'item2:','"'+item2+'"]'
