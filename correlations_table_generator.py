@@ -9,6 +9,9 @@ c = conn.cursor()
 #SET ITEMS LIST
 themes = [2833226,5871901,253220,2703099,1264247,168737,2826493,2189918,2819356,2708562,4363266,4287447,4519990,5556590,5484319,3810895,6221179,5177775,4106987,5489609,6434280,7758048,7315054,9512331,9323981,4021469,6776630,8819050,11776839,13373220,9228123,9545812,6339019,13304399,9602611,11118909,10695119,10648488,11099136,9553045,13080328,10439297,7824993]
 
+#IF WE NEED FULL LIST OF ITEMS FOR EACH ITEM (WITHOUT MERGING DATA FROM TWO COLUMNS)
+crossDuplication = True
+
 #HERE WE LOG INTO OUTSIDE FILE
 with open('file.txt', 'w+n') as file:
 	
@@ -120,7 +123,6 @@ with open('file.txt', 'w+n') as file:
 		
 		
 
-	arr = [1,2,3,4]
 	arrLen = len(themes)
 
 	invertConcatList = []
@@ -140,7 +142,7 @@ with open('file.txt', 'w+n') as file:
 
 			if themes[item] != themes[sec_item]:
 
-				if normConc in invertConcatList:
+				if crossDuplication != True  and normConc in invertConcatList :
 				
 					1+1
 
