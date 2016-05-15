@@ -12,6 +12,9 @@ themes = [2833226,5871901,253220,2703099,1264247,168737,2826493,2189918,2819356,
 #IF WE NEED FULL LIST OF ITEMS FOR EACH ITEM (WITHOUT MERGING DATA FROM TWO COLUMNS)
 crossDuplication = True
 
+#CUTOFF SHARE (WE IGNORE ITEMS SETS WITH RATIO LESS THAN ignoreRatio)
+ignoreRatio = 10
+
 #HERE WE LOG INTO OUTSIDE FILE
 with open('file.txt', 'w+n') as file:
 	
@@ -33,6 +36,7 @@ with open('file.txt', 'w+n') as file:
 	rangeTo = '2016-06-01'
 
 	#CORRELATIONS MATH FUNCTION
+	#ignoreRatio is available share of representative data
 	def corr(array1, array2, ignoreRatio):
 		
 		Ex = 0
@@ -153,7 +157,7 @@ with open('file.txt', 'w+n') as file:
 					item1 = themes_titles[item].encode('utf-8', 'ignore')
 					item2 = themes_titles[sec_item].encode('utf-8', 'ignore')
 
-					correl = str(corr(sales[item],sales[sec_item],10))
+					correl = str(corr(sales[item],sales[sec_item], ignoreRatio))
 					
 					if correl != 'Data is not complete/representative':
 						#print 'execute:', 'correl returns', correl, '[item1:','"'+item1+'"', 'item2:','"'+item2+'"]'
