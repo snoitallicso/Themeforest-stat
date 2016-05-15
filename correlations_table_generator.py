@@ -46,7 +46,7 @@ with open('file.txt', 'w+n') as file:
 		#GET LIST WITH MOST NULL VALUES (weakest link)
 		nullsShare = max(array1.count('null'), array2.count('null'))
 		
-		print nullsShare
+		#print nullsShare
 		file.write("nullsShare: "+str(nullsShare)+ " \n")
 		
 		#listFullness = arraysLength - nullsShare
@@ -54,7 +54,7 @@ with open('file.txt', 'w+n') as file:
 		#MATH SHARE PERCENT
 		listFullness = 100 - (float(Decimal(100) / Decimal(arraysLength)) * nullsShare)
 			
-		print 'listFullness:',listFullness,'arraysLength',arraysLength,'nullsShare',nullsShare
+		#print 'listFullness:',listFullness,'arraysLength',arraysLength,'nullsShare',nullsShare
 		file.write('listFullness: '+str(listFullness)+' arraysLength: '+str(arraysLength)+' nullsShare: '+str(nullsShare)+ " \n")
 		
 		if listFullness >= ignoreRatio:
@@ -153,15 +153,16 @@ with open('file.txt', 'w+n') as file:
 					item1 = themes_titles[item].encode('utf-8', 'ignore')
 					item2 = themes_titles[sec_item].encode('utf-8', 'ignore')
 
-					correl = str(corr(sales[item],sales[sec_item],50))
+					correl = str(corr(sales[item],sales[sec_item],10))
 					
 					if correl != 'Data is not complete/representative':
-						print 'execute:', 'correl returns', correl, '[item1:','"'+item1+'"', 'item2:','"'+item2+'"]'
+						#print 'execute:', 'correl returns', correl, '[item1:','"'+item1+'"', 'item2:','"'+item2+'"]'
 						c.execute("insert into `correlations_2015plus` values ('"+str(themes[item])+"', '"+item1+"', '"+str(themes[sec_item])+"', '"+item2+"', '"+correl+"')")
 						file.write('execute: correl returns: ' + correl + ' [item1: "' + item1 + '"item2: "' + item2 + '"]' + '\n')
 					else:
 
-						print correl
+						#print correl
+						1+1
 					
 			else:
 				1+1
