@@ -131,7 +131,7 @@ with open('file.txt', 'w+n') as file:
 
 	#REPLACE TABLE
 	c.execute("DROP TABLE IF EXISTS `correlations_2015plus`")
-	c.execute("CREATE TABLE `correlations_2015plus` (`id1` int, `item1` char, `id2` int, `item2` char, `item1_array_density` int, `item2_array_density` int, `correlation` float)")
+	c.execute("CREATE TABLE `correlations_2015plus` (`id1` int, `item1` char, `id2` int, `item2` char, `item1_array_density` int, `item2_array_density` int, `minimal_arrays_density` int, `correlation` float)")
 
 	for item in range(0,arrLen):
 
@@ -157,13 +157,24 @@ with open('file.txt', 'w+n') as file:
 
 					correl = str(corr(sales[item],sales[sec_item], ignoreRatio))
 
-					listFullness_item1 = str(  100 - (float(Decimal(100) / Decimal(len(sales[item]))) * sales[item].count('null'))  )
-					listFullness_item2 = str(  100 - (float(Decimal(100) / Decimal(len(sales[sec_item]))) * sales[sec_item].count('null'))  )
+					listFullness_item1 = 100 - (float(Decimal(100) / Decimal(len(sales[item]))) * sales[item].count('null'))
+					listFullness_item2 = 100 - (float(Decimal(100) / Decimal(len(sales[sec_item]))) * sales[sec_item].count('null'))
+					minItemsFullness = str(  min(listFullness_item1, listFullness_item2)  )
 					
 					if correl != 'Data is not complete/representative':
 						#print 'execute:', 'correl returns', correl, '[item1:','"'+item1+'"', 'item2:','"'+item2+'"]'
-						c.execute("insert into `correlations_2015plus` values ('"+str(themes[item])+"', '"+item1+"', '"+str(themes[sec_item])+"', '"+item2+"', '"+listFullness_item1+"', '"+listFullness_item2+"', '"+correl+"')")
+						c.execute("insert into `correlations_2015plus` values ('"
+							+ str(themes[item]) +"', '"
+							+ item1 +"', '"
+							+ str(themes[sec_item]) +"', '"
+							+ item2 +"', '"
+							+ str(  listFullness_item1  ) +"', '"
+							+ str(  listFullness_item2  ) +"',  '"
+							+ minItemsFullness +"', '"
+							+ correl +"')")
+						
 						file.write('execute: correl returns: ' + correl + ' [item1: "' + item1 + '"item2: "' + item2 + '"]' + '\n')
+					
 					else:
 
 						#print correl
