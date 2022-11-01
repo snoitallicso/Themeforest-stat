@@ -32,7 +32,7 @@ c2 = conn2.cursor()
 
 #TODO: vuka isnt adequate and significant acronym
 for row in vuka:
-    print row[0]
+#    print row[0]
 
     tableId = str(row[1])
     tableName = row[0]
@@ -41,17 +41,20 @@ for row in vuka:
 
     # Create tableS in e_themeforest_themes.sqlite database
     #c2.execute('''create table "['''+tableId+'''] '''+tableName+'''" ("Sales_period" TEXT (null) UNIQUE, "Sales" DEFAULT (null))''')
+    #print("create table", tableId, '("Sales_period" TEXT UNIQUE, "Sales" DEFAULT (null))')
     c2.execute('''create table "'''+tableId+'''" ("Sales_period" TEXT UNIQUE, "Sales" DEFAULT (null))''')
 
 
     #####################################################
 
     # FILL UP THEME WITH AVAILABLE TIME ROWS
+    #print("INSERT INTO", tableId, "SELECT Sales_period, Sales FROM", tbl_Topweek_Log, " WHERE 'Item_id'=", tableId)
     c2.execute('''INSERT INTO "'''+tableId+'''" SELECT "Sales_period", "Sales" FROM "'''+tbl_Topweek_Log+'''" WHERE "Item_id"="'''+tableId+'''"''')
 
     #####################################################
 
     # FILL UP THEME TABLE WITH UN-AVAILABLE TIME ROWS
+    #print("INSERT OR IGNORE INTO", tableId, " SELECT 'Sales_period', 'Sales' FROM ", tbl_Fill_Daterange)
     c2.execute('''INSERT OR IGNORE INTO "'''+tableId+'''" SELECT "Sales_period", "Sales" FROM "'''+tbl_Fill_Daterange+'''"''')
 
 # Save (commit) the changes

@@ -19,6 +19,7 @@ conn = sqlite3.connect(dbPath)
 c = conn.cursor()
 
 ######CREATE "__themes_list" list table for further big goal: mass creating themes tables
+#c.execute('''DROP TABLE "main"."__themes_list"''')
 c.execute('''CREATE TABLE "'''+tbl_Themes_List+'''" ("Item_title" VARCHAR, "Item_id" INTEGER UNIQUE, "Price" INTEGER)''')
 
 ######MERGE LOG FROM MAIN LOG TABLE "__topweek_log" INTO "__themes_list". THANKS TO UNIQUE

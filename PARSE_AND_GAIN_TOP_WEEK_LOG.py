@@ -1,7 +1,13 @@
 from bs4 import BeautifulSoup
 import sqlite3
-from PREFS import dbPath, tbl_Topweek_Log
+from PREFS import dbPath, pagesPath, tbl_Topweek_Log
+from datetime import datetime,timedelta
+import os
 
+#Py2:
+from urlparse import urlparse,parse_qs
+#Py3:
+#from urllib.parse import urlparse,parse_qs
 
 
 ###### THIS FILE PARSE HTML FILES INTO BIG LOG TABLE (__topweek_log) THAT INCLUDE DATA WITH TOP SELLING THEMES OF ALL PERIODS
@@ -12,21 +18,32 @@ from PREFS import dbPath, tbl_Topweek_Log
 
 
 ######CONNECT TO DB
+if os.path.exists(dbPath):
+	print("Database is exist!")
+	os.unlink(dbPath)
+	print("Removed")
+	
 conn = sqlite3.connect(dbPath)
 c = conn.cursor()
 
 ######CREATE table for logs
 c.execute('''CREATE TABLE IF NOT EXISTS "main"."'''+tbl_Topweek_Log+'''" ("Sales_period" TEXT, "Item_title" VARCHAR, "Item_id" INTEGER, "Price" INTEGER, "Sales")''')
 
-#GOAL: get webpage date period (end week for top sellers)
+for page in os.listdir(pagesPath):
 
-#TODO: auto docs len counter #376
-for pagenum in range(2,382):
+	webpage = BeautifulSoup(open( pagesPath + "/" + page), "html.parser")
+	prevWeekUrl = webpage.find("div", class_="week-switcher").a.get("href")
 
-	webpage = BeautifulSoup(open("C:\Users\me\Desktop\!!!2\index (" +str(pagenum)+ ").html"), "html.parser")
-	rawdatetitle = webpage.find_all("h1", class_="t-heading")[0]
-	dateString = rawdatetitle.text[22:30] #[08/06/14]
-	dateString = "20"+dateString[6:8]+"-"+dateString[3:5]+"-"+dateString[0:2] #[08/06/14 to 2014-06-08]
+	prevWeekUrl_parsed =urlparse(prevWeekUrl)
+	prevWeekQuery =prevWeekUrl_parsed.query
+	prevWeekDictDate =parse_qs(prevWeekQuery)
+
+	nextWeekDate = datetime(
+			int(prevWeekDictDate["year"][0]),
+			int(prevWeekDictDate["month"][0]),
+			int(prevWeekDictDate["day"][0])) + timedelta(days=7)
+
+	dateString = nextWeekDate.date()
 
 # #GOAL: get Sales, Item id and Name for each item presented on the page
 	weeklyTopHTML = webpage.find_all("ul", class_="item-grid")[0]
@@ -34,7 +51,7 @@ for pagenum in range(2,382):
 	##get items raw array
 	itemsRawHTML = weeklyTopHTML.find_all("li", class_="js-google-analytics__list-event-container")
 
-	print "page number: "+ str(pagenum) + " Top week items: "+ str(len(itemsRawHTML)) + " Week: " + str(dateString)
+#	print "page number: "+ str(pagenum) + " Top week items: "+ str(len(itemsRawHTML)) + " Week: " + str(dateString)
 
 	for num in range(0, len(itemsRawHTML)):
 				

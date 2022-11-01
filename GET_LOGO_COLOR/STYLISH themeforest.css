@@ -1,0 +1,10 @@
+.item-thumbnail-actions, .sale-info, .item-info, small.meta, .rating {
+    display: none !important;
+}
+
+.item-grid li {
+    margin: 0;
+    width: 80px;
+    height: 80px !important;
+    min-height: 80px;
+}

@@ -1,9 +1,10 @@
 import math
 import sqlite3
 from decimal import *
+from PREFS import dbPath
 
 #SQLITE CONNECTION
-conn = sqlite3.connect("E:\Sales gathering\exmpl.sqlite")
+conn = sqlite3.connect(dbPath)
 c = conn.cursor()
 
 #SET ITEMS LIST
@@ -13,7 +14,7 @@ themes = [2833226,5871901,253220,2703099,1264247,168737,2826493,2189918,2819356,
 crossDuplication = True
 
 #CUTOFF SHARE (WE IGNORE ITEMS SETS WITH RATIO LESS THAN ignoreRatio)
-ignoreRatio = 10
+ignoreRatio = 100
 
 #HERE WE LOG INTO OUTSIDE FILE
 with open('file.txt', 'w+n') as file:
@@ -32,8 +33,8 @@ with open('file.txt', 'w+n') as file:
 	sales = []
 
 	#SET TIME RANGE
-	rangeFrom = '2015-10-01'
-	rangeTo = '2016-06-01'
+	rangeFrom = '2017-01-22'
+	rangeTo = '2017-06-11'
 
 	#CORRELATIONS MATH FUNCTION
 	#ignoreRatio is available share of representative data
